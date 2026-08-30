@@ -14,7 +14,7 @@ _linuxprefix=linux72
 _module=tp_smapi
 pkgname="${_linuxprefix}-${_module}"
 pkgver=0.45
-pkgrel=0.1
+pkgrel=1
 pkgdesc="Modules for ThinkPad's SMAPI functionality"
 arch=('x86_64')
 url='https://github.com/evgeni/tp_smapi'
@@ -29,11 +29,13 @@ sha256sums=('32d5aa976884822905390c57548307810a23963cd39f5bfb69e127f81449c6f5')
 
 pkgver() {
   cd "${_module}"
+  # https://github.com/linux-thinkpad/tp_smapi/pull/81
   git describe --tags | sed 's/^tp-smapi\///;s/[^-]*-g/r&/;s/-/+/g'
 }
 
 prepare() {
   cd "${_module}"
+  git cherry-pick --mainline 1 --no-commit 0483993a64f6d922d71dddd8f7f353d8bc22d1bf
 }
 
 build() {
